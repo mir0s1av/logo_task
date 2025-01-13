@@ -1,11 +1,11 @@
 import { Module, ModuleMetadata } from '@nestjs/common';
-import { UploadController } from './logo.controller';
+import { UploadController } from './upload.controller';
 import { S3Module } from '@app/common/s3/s3.module';
-import { LogoService } from './logo.service';
+import { UploadService } from './upload.service';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { DatabaseModule } from '@app/common';
-import { LogoRepository } from './logo.repository';
+import { LogoRepository } from '../logo/logo.repository';
 
 const moduleMetadata: ModuleMetadata = {
   imports: [
@@ -21,7 +21,7 @@ const moduleMetadata: ModuleMetadata = {
   controllers: [UploadController],
   providers: [
     LogoRepository,
-    LogoService,
+    UploadService,
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
@@ -30,4 +30,4 @@ const moduleMetadata: ModuleMetadata = {
 };
 
 @Module(moduleMetadata)
-export class LogoModule {}
+export class UploadModule {}

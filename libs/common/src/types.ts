@@ -1,5 +1,5 @@
-export type UploadResponse = [string | null, string | null];
-export type UploadCreatePayload = {
+export type UploadFileToS3Response = [string | null, string | null];
+export type UploadFileToS3Payload = {
   fileName: string;
   file: Buffer;
 };

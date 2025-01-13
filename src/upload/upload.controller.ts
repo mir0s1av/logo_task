@@ -1,6 +1,5 @@
 import { IMAGE_TYPE_REGEX, MAX_FILE_SIZE } from '@app/common';
 import {
-  Body,
   Controller,
   FileTypeValidator,
   MaxFileSizeValidator,
@@ -11,19 +10,17 @@ import {
   UsePipes,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { LogoService } from './logo.service';
+import { UploadService } from './upload.service';
 import { ZodValidationPipe } from 'nestjs-zod';
-import { CreateLogoDto } from './logo.schema';
 
 @Controller('upload')
 export class UploadController {
-  constructor(private readonly logoService: LogoService) {}
+  constructor(private readonly uploadService: UploadService) {}
 
   @Post()
   @UsePipes(ZodValidationPipe)
   @UseInterceptors(FileInterceptor('file'))
   async upload(
-    @Body() { companyName }: CreateLogoDto,
     @UploadedFile(
       new ParseFilePipe({
         validators: [
@@ -34,6 +31,6 @@ export class UploadController {
     )
     file: Express.Multer.File,
   ) {
-    return this.logoService.uploadFile(file, companyName);
+    return this.uploadService.uploadFile(file);
   }
 }

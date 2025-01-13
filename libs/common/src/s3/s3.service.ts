@@ -1,7 +1,7 @@
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { UploadCreatePayload, UploadResponse } from '../types';
+import { UploadFileToS3Payload, UploadFileToS3Response } from '../types';
 
 @Injectable()
 export class S3Service {
@@ -19,7 +19,7 @@ export class S3Service {
   async upload({
     fileName,
     file,
-  }: UploadCreatePayload): Promise<UploadResponse> {
+  }: UploadFileToS3Payload): Promise<UploadFileToS3Response> {
     const key = `logos/${Date.now()}-${fileName}`;
     try {
       await this.s3Client.send(
@@ -29,7 +29,7 @@ export class S3Service {
           Body: file,
         }),
       );
-      // Generate the URL
+
       const url = this.generateS3PublicUrl(key);
 
       return [url, null];
